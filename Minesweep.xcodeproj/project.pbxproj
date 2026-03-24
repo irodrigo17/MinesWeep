@@ -7,19 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A10000001 /* MinesweepApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000001; };
-		A10000002 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000002; };
-		A10000003 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000003; };
-		A10000004 /* Difficulty.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000004; };
-		A10000005 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000005; };
-		A10000006 /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000006; };
-		A10000007 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000007; };
-		A10000008 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000008; };
-		A10000009 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000009; };
-		A10000010 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010; };
-		A10000011 /* GameOverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000011; };
-		A10000012 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000012; };
-		A10000013 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B10000013; };
+		A10000001 /* MinesweepApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000001 /* MinesweepApp.swift */; };
+		A10000002 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000002 /* Cell.swift */; };
+		A10000003 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000003 /* GameState.swift */; };
+		A10000004 /* Difficulty.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000004 /* Difficulty.swift */; };
+		A10000005 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000005 /* Board.swift */; };
+		A10000006 /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000006 /* GameViewModel.swift */; };
+		A10000007 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000007 /* CellView.swift */; };
+		A10000008 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000008 /* HeaderView.swift */; };
+		A10000009 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000009 /* MenuView.swift */; };
+		A10000010 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000010 /* GameView.swift */; };
+		A10000011 /* GameOverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000011 /* GameOverView.swift */; };
+		A10000012 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000012 /* HapticManager.swift */; };
+		A10000013 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B10000013 /* Assets.xcassets */; };
+		A10000014 /* GameStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000014 /* GameStats.swift */; };
+		A10000015 /* StatsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000015 /* StatsStore.swift */; };
+		A10000016 /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000016 /* StatsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,11 +39,14 @@
 		B10000011 /* GameOverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverView.swift; sourceTree = "<group>"; };
 		B10000012 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		B10000013 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B10000014 /* GameStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStats.swift; sourceTree = "<group>"; };
+		B10000015 /* StatsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsStore.swift; sourceTree = "<group>"; };
+		B10000016 /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
 		C10000001 /* Minesweep.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Minesweep.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
-		D10000001 /* Root */ = {
+		D10000001 = {
 			isa = PBXGroup;
 			children = (
 				D10000002 /* Minesweep */,
@@ -76,6 +82,8 @@
 				B10000003 /* GameState.swift */,
 				B10000004 /* Difficulty.swift */,
 				B10000005 /* Board.swift */,
+				B10000014 /* GameStats.swift */,
+				B10000015 /* StatsStore.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -96,6 +104,7 @@
 				B10000009 /* MenuView.swift */,
 				B10000010 /* GameView.swift */,
 				B10000011 /* GameOverView.swift */,
+				B10000016 /* StatsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -153,7 +162,7 @@
 				en,
 				Base,
 			);
-			mainGroup = D10000001 /* Root */;
+			mainGroup = D10000001;
 			productRefGroup = D10000008 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -191,6 +200,9 @@
 				A10000010 /* GameView.swift in Sources */,
 				A10000011 /* GameOverView.swift in Sources */,
 				A10000012 /* HapticManager.swift in Sources */,
+				A10000014 /* GameStats.swift in Sources */,
+				A10000015 /* StatsStore.swift in Sources */,
+				A10000016 /* StatsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -247,6 +259,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = K3CQQKBR25;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -269,6 +282,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = K3CQQKBR25;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -306,7 +320,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
 	};
 	rootObject = E10000010 /* Project object */;
 }

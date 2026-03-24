@@ -76,9 +76,11 @@ class GameViewModel: ObservableObject {
         case .mine:
             gameState = .lost
             stopTimer()
+            StatsStore.shared.recordLoss(difficulty: difficulty)
         case .won:
             gameState = .won
             stopTimer()
+            StatsStore.shared.recordWin(difficulty: difficulty, time: elapsedSeconds)
         case .safe, .noAction:
             break
         }

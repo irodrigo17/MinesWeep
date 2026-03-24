@@ -18,7 +18,7 @@ enum Difficulty: String, CaseIterable, Identifiable {
     var rows: Int {
         switch self {
         case .beginner: 9
-        case .intermediate: 16
+        case .intermediate: 12
         case .expert: 16
         }
     }
@@ -26,16 +26,16 @@ enum Difficulty: String, CaseIterable, Identifiable {
     var columns: Int {
         switch self {
         case .beginner: 9
-        case .intermediate: 16
-        case .expert: 30
+        case .intermediate: 12
+        case .expert: 10
         }
     }
 
     var mineCount: Int {
         switch self {
         case .beginner: 10
-        case .intermediate: 40
-        case .expert: 99
+        case .intermediate: 22
+        case .expert: 32
         }
     }
 }

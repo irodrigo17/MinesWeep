@@ -15,11 +15,12 @@ struct GameView: View {
 
             Divider()
 
-            ScrollView([.horizontal, .vertical]) {
-                gridView
-                    .padding(8)
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            Spacer()
+
+            gridView
+                .padding(8)
+
+            Spacer()
 
             Divider()
 

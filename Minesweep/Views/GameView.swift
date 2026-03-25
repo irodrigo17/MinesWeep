@@ -61,6 +61,10 @@ struct GameView: View {
                         }
                         .accessibilityLabel(accessibilityLabel(row: row, col: col))
                         .accessibilityHint(accessibilityHint(row: row, col: col))
+                        .accessibilityAddTraits(viewModel.cells[row][col].isRevealed ? [] : .isButton)
+                        .accessibilityAction(named: "Toggle Flag") {
+                            handleLongPress(row: row, col: col)
+                        }
                     }
                 }
             }

@@ -86,7 +86,7 @@ struct Board {
         revealedCount += 1
 
         if cells[row][col].isMine {
-            revealAllMines(triggeredRow: row, triggeredCol: col)
+            revealAllMines()
             return .mine
         }
 
@@ -127,18 +127,19 @@ struct Board {
         for (r, c) in neighbors(of: row, col) {
             if cells[r][c].isHidden {
                 cells[r][c].state = .revealed
-                revealedCount += 1
                 if cells[r][c].isMine {
                     hitMine = true
-                }
-                if !hitMine && cells[r][c].adjacentMines == 0 && !cells[r][c].isMine {
-                    floodFill(from: r, c)
+                } else {
+                    revealedCount += 1
+                    if !hitMine && cells[r][c].adjacentMines == 0 {
+                        floodFill(from: r, c)
+                    }
                 }
             }
         }
 
         if hitMine {
-            revealAllMines(triggeredRow: row, triggeredCol: col)
+            revealAllMines()
             return .mine
         }
         if revealedCount == totalCells - mineCount {
@@ -166,7 +167,7 @@ struct Board {
 
     // MARK: - Mine Reveal on Loss
 
-    private mutating func revealAllMines(triggeredRow: Int, triggeredCol: Int) {
+    private mutating func revealAllMines() {
         for r in 0..<rows {
             for c in 0..<columns {
                 if cells[r][c].isMine && cells[r][c].isHidden {

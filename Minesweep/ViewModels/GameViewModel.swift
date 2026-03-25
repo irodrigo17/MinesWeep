@@ -21,6 +21,11 @@ class GameViewModel: ObservableObject {
         self.board = Board(difficulty: difficulty)
     }
 
+    deinit {
+        timer?.invalidate()
+        hintTimer?.invalidate()
+    }
+
     // MARK: - Actions
 
     func revealCell(row: Int, col: Int) {
@@ -54,6 +59,9 @@ class GameViewModel: ObservableObject {
         elapsedSeconds = 0
         startDate = nil
         stopTimer()
+        hintTimer?.invalidate()
+        hintTimer = nil
+        hintCell = nil
     }
 
     // MARK: - Hint
@@ -143,10 +151,18 @@ class GameViewModel: ObservableObject {
         case .mine:
             gameState = .lost
             stopTimer()
+            hintTimer?.invalidate()
+            hintTimer = nil
+            hintCell = nil
+            HapticManager.notification(.error)
             StatsStore.shared.recordLoss(difficulty: difficulty)
         case .won:
             gameState = .won
             stopTimer()
+            hintTimer?.invalidate()
+            hintTimer = nil
+            hintCell = nil
+            HapticManager.notification(.success)
             StatsStore.shared.recordWin(difficulty: difficulty, time: elapsedSeconds)
         case .safe, .noAction:
             break

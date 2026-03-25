@@ -8,13 +8,13 @@ struct CellView: View {
 
     private static let numberColors: [Int: Color] = [
         1: .blue,
-        2: Color(red: 0, green: 0.5, blue: 0),
+        2: Color(.systemGreen),
         3: .red,
-        4: Color(red: 0, green: 0, blue: 0.5),
-        5: Color(red: 0.5, green: 0, blue: 0),
+        4: .purple,
+        5: .orange,
         6: .teal,
-        7: .black,
-        8: .gray,
+        7: Color(.label),
+        8: Color(.secondaryLabel),
     ]
 
     var body: some View {
@@ -76,7 +76,7 @@ struct CellView: View {
             .overlay(
                 Image(systemName: "circle.fill")
                     .font(.system(size: size * 0.4))
-                    .foregroundStyle(.black)
+                    .foregroundStyle(.primary)
             )
     }
 

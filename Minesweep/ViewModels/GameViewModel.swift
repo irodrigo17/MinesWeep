@@ -9,6 +9,7 @@ class GameViewModel: ObservableObject {
     @Published var hintCell: (row: Int, col: Int)?
     @Published var flagMode: Bool = false
     private var startDate: Date?
+    private var accumulatedTime: TimeInterval = 0
     private var timer: Timer?
     private var hintTimer: Timer?
     private let statsRecorder: StatsRecording
@@ -73,6 +74,7 @@ class GameViewModel: ObservableObject {
         gameState = .idle
         elapsedSeconds = 0
         startDate = nil
+        accumulatedTime = 0
         stopTimer()
         hintTimer?.invalidate()
         hintTimer = nil
@@ -151,13 +153,27 @@ class GameViewModel: ObservableObject {
         startDate = Date()
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             guard let self, let startDate = self.startDate else { return }
-            self.elapsedSeconds = min(999, Int(Date().timeIntervalSince(startDate)))
+            self.elapsedSeconds = min(999, Int(self.accumulatedTime + Date().timeIntervalSince(startDate)))
         }
     }
 
     private func stopTimer() {
+        if let startDate {
+            accumulatedTime += Date().timeIntervalSince(startDate)
+        }
+        startDate = nil
         timer?.invalidate()
         timer = nil
+    }
+
+    func pauseTimer() {
+        guard gameState == .playing, timer != nil else { return }
+        stopTimer()
+    }
+
+    func resumeTimer() {
+        guard gameState == .playing, timer == nil else { return }
+        startTimer()
     }
 
     // MARK: - Result Handling

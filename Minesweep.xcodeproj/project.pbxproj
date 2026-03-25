@@ -24,6 +24,8 @@
 		A10000015 /* StatsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000015 /* StatsStore.swift */; };
 		A10000016 /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000016 /* StatsView.swift */; };
 		A10000017 /* ShakeDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000017 /* ShakeDetector.swift */; };
+		A10000018 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000018 /* Settings.swift */; };
+		A10000019 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000019 /* SettingsView.swift */; };
 		A20000001 /* BoardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000001 /* BoardTests.swift */; };
 		A20000002 /* GameStatsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000002 /* GameStatsTests.swift */; };
 		A20000003 /* GameViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000003 /* GameViewModelTests.swift */; };
@@ -67,6 +69,8 @@
 		B10000015 /* StatsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsStore.swift; sourceTree = "<group>"; };
 		B10000016 /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
 		B10000017 /* ShakeDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShakeDetector.swift; sourceTree = "<group>"; };
+		B10000018 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		B10000019 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		B20000001 /* BoardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardTests.swift; sourceTree = "<group>"; };
 		B20000002 /* GameStatsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStatsTests.swift; sourceTree = "<group>"; };
 		B20000003 /* GameViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModelTests.swift; sourceTree = "<group>"; };
@@ -119,6 +123,7 @@
 				B10000005 /* Board.swift */,
 				B10000014 /* GameStats.swift */,
 				B10000015 /* StatsStore.swift */,
+				B10000018 /* Settings.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -140,6 +145,7 @@
 				B10000010 /* GameView.swift */,
 				B10000011 /* GameOverView.swift */,
 				B10000016 /* StatsView.swift */,
+				B10000019 /* SettingsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -296,6 +302,8 @@
 				A10000015 /* StatsStore.swift in Sources */,
 				A10000016 /* StatsView.swift in Sources */,
 				A10000017 /* ShakeDetector.swift in Sources */,
+				A10000018 /* Settings.swift in Sources */,
+				A10000019 /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

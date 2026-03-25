@@ -3,6 +3,7 @@ import SwiftUI
 struct MenuView: View {
     let onSelectDifficulty: (Difficulty) -> Void
     @State private var showStats = false
+    @State private var showSettings = false
 
     var body: some View {
         VStack(spacing: 32) {
@@ -38,17 +39,29 @@ struct MenuView: View {
             }
             .padding(.horizontal, 40)
 
-            Button {
-                showStats = true
-            } label: {
-                Label("Statistics", systemImage: "chart.bar.fill")
-                    .font(.headline)
+            HStack(spacing: 24) {
+                Button {
+                    showStats = true
+                } label: {
+                    Label("Statistics", systemImage: "chart.bar.fill")
+                        .font(.headline)
+                }
+
+                Button {
+                    showSettings = true
+                } label: {
+                    Label("Settings", systemImage: "gearshape.fill")
+                        .font(.headline)
+                }
             }
 
             Spacer()
         }
         .sheet(isPresented: $showStats) {
             StatsView()
+        }
+        .sheet(isPresented: $showSettings) {
+            SettingsView()
         }
     }
 }

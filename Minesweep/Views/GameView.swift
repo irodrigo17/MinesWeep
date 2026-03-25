@@ -2,6 +2,8 @@ import SwiftUI
 
 struct GameView: View {
     @ObservedObject var viewModel: GameViewModel
+    @ObservedObject var settings: Settings = .shared
+    @State private var showSettings = false
     let onMenu: () -> Void
 
     var body: some View {
@@ -44,6 +46,14 @@ struct GameView: View {
             }
         }
         .animation(.easeOut(duration: 0.3), value: viewModel.gameState)
+        .sheet(isPresented: $showSettings, onDismiss: {
+            viewModel.resumeTimer()
+        }) {
+            SettingsView()
+                .onAppear {
+                    viewModel.pauseTimer()
+                }
+        }
     }
 
     private func gridView(availableWidth: CGFloat) -> some View {
@@ -59,7 +69,7 @@ struct GameView: View {
                             isHinted: viewModel.hintCell?.row == row && viewModel.hintCell?.col == col
                         )
                         .gesture(
-                            LongPressGesture(minimumDuration: 0.2)
+                            LongPressGesture(minimumDuration: settings.longPressDuration)
                                 .onEnded { _ in
                                     handleLongPress(row: row, col: col)
                                 }
@@ -100,6 +110,14 @@ struct GameView: View {
             Text(viewModel.difficulty.displayName)
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
+            Spacer()
+            Button {
+                showSettings = true
+            } label: {
+                Image(systemName: "gearshape")
+                    .font(.subheadline)
+            }
+            .accessibilityIdentifier("settingsButton")
         }
         .padding(.horizontal)
         .padding(.vertical, 8)

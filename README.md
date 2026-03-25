@@ -11,7 +11,7 @@
 [![Platform](https://img.shields.io/badge/Platform-iOS%2017+-blue.svg?style=flat&logo=apple)](https://developer.apple.com/ios/)
 [![SwiftUI](https://img.shields.io/badge/UI-SwiftUI-purple.svg?style=flat&logo=swift)](https://developer.apple.com/swiftui/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg?style=flat)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-69%20passed-brightgreen.svg?style=flat&logo=checkmarx)](#-testing)
+[![Tests](https://img.shields.io/badge/Tests-80%20passed-brightgreen.svg?style=flat&logo=checkmarx)](#-testing)
 [![No Dependencies](https://img.shields.io/badge/Dependencies-None-lightgrey.svg?style=flat)](#)
 
 <br>
@@ -184,7 +184,7 @@ To enable cross-device stat syncing:
 
 ### Test Suite Overview
 
-The project includes **69 unit tests** across 5 test files covering the core game logic:
+The project includes **80 tests** across 6 test files — 69 unit tests covering core game logic and 11 UI tests verifying end-to-end user flows:
 
 ```
 MinesweepTests/
@@ -194,7 +194,12 @@ MinesweepTests/
 ├── StatsStoreTests.swift      6 tests
 └── DifficultyTests.swift      5 tests
                               ─────────
-                              69 tests
+                              69 unit tests
+
+MinesweepUITests/
+└── MinesweepUITests.swift    11 tests
+                              ─────────
+                              11 UI tests
 ```
 
 ### Run Tests
@@ -219,6 +224,7 @@ xcodebuild -project Minesweep.xcodeproj \
 | **StatsStoreTests** | 6 | `StatsRecording` protocol verification, ViewModel stats integration (win/loss recording via injected mock, correct difficulty tracking, no stats on safe reveal) |
 | **GameStatsTests** | 7 | Initial state, record win, record loss, best time tracks minimum, average win time, win rate accuracy, `Codable` encode/decode round-trip |
 | **DifficultyTests** | 5 | Beginner/Intermediate/Expert preset values, mine count < total cells invariant, `allCases` count |
+| **MinesweepUITests** | 11 | Menu display (difficulty buttons, statistics button), navigation (to game, back to menu), cell reveal on tap, flag mode (toggle, flags cell), reset button, statistics view (open/close), difficulty labels shown in game (beginner/intermediate/expert) |
 
 ---
 
@@ -256,6 +262,8 @@ minesweep/
 │   ├── StatsStoreTests.swift               #  6 tests
 │   ├── GameStatsTests.swift                #  7 tests
 │   └── DifficultyTests.swift               #  5 tests
+├── MinesweepUITests/
+│   └── MinesweepUITests.swift              # 11 UI tests
 └── README.md
 ```
 

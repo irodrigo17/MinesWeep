@@ -76,16 +76,18 @@
 		B20000003 /* GameViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModelTests.swift; sourceTree = "<group>"; };
 		B20000004 /* DifficultyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DifficultyTests.swift; sourceTree = "<group>"; };
 		B20000005 /* StatsStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsStoreTests.swift; sourceTree = "<group>"; };
+		B30000001 /* MinesweepUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinesweepUITests.swift; sourceTree = "<group>"; };
 		C10000001 /* Minesweep.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Minesweep.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C20000002 /* MinesweepTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MinesweepTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		B30000001 /* MinesweepUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinesweepUITests.swift; sourceTree = "<group>"; };
 		C30000002 /* MinesweepUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MinesweepUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FBFA8FFB2F73C129004AF0EB /* Minesweep.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Minesweep.xctestplan; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		D10000001 = {
 			isa = PBXGroup;
 			children = (
+				FBFA8FFB2F73C129004AF0EB /* Minesweep.xctestplan */,
 				D10000002 /* Minesweep */,
 				D20000001 /* MinesweepTests */,
 				D30000001 /* MinesweepUITests */,

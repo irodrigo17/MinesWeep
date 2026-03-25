@@ -48,7 +48,7 @@ class GameViewModel: ObservableObject {
         guard gameState == .idle || gameState == .playing else { return }
 
         if gameState == .idle {
-            board.placeMines(excludingRow: row, excludingColumn: col)
+            board.placeMines(excludingRow: row, excludingColumn: col, ensureSolvable: Settings.shared.solvableBoards)
             gameState = .playing
             startTimer()
         }

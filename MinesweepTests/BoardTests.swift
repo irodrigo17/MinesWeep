@@ -426,6 +426,61 @@ final class BoardTests: XCTestCase {
         XCTAssertEqual(board.remainingFlags, -2)
     }
 
+    // MARK: - Solvability
+
+    func testIsSolvableReturnsTrueForSolvableBoard() {
+        // 3x3 board with mine at (0,2) — solvable from (0,0) via flood fill + deduction
+        let board = makeTestBoard()
+        XCTAssertTrue(board.isSolvable(fromRow: 0, col: 0))
+    }
+
+    func testIsSolvableReturnsFalseForUnsolvableBoard() {
+        // Symmetric board where two corners are mines — creates a 50/50 guess
+        let cells: [[Cell]] = [
+            [Cell(isMine: true), Cell(adjacentMines: 1), Cell(adjacentMines: 0)],
+            [Cell(adjacentMines: 1), Cell(adjacentMines: 2), Cell(adjacentMines: 1)],
+            [Cell(adjacentMines: 0), Cell(adjacentMines: 1), Cell(isMine: true)],
+        ]
+        let board = Board(cells: cells, mineCount: 2)
+        // From (0,2) flood fill reveals (0,2) only (adjacentMines=0 floods)
+        // but the two mines are symmetrically placed — can't deduce which corner
+        XCTAssertFalse(board.isSolvable(fromRow: 0, col: 2))
+    }
+
+    func testEnsureSolvableProducesSolvableBoard() {
+        // Run multiple times to verify the retry logic works
+        for _ in 0..<10 {
+            var board = Board(difficulty: .beginner)
+            board.placeMines(excludingRow: 4, excludingColumn: 4, ensureSolvable: true)
+            XCTAssertTrue(
+                board.isSolvable(fromRow: 4, col: 4),
+                "Board should be solvable when ensureSolvable is true"
+            )
+        }
+    }
+
+    func testEnsureSolvableFalseSkipsRetry() {
+        // Should still produce a valid board (correct mine count, first tap safe)
+        var board = Board(difficulty: .beginner)
+        board.placeMines(excludingRow: 4, excludingColumn: 4, ensureSolvable: false)
+        let mineCount = board.cells.flatMap { $0 }.filter { $0.isMine }.count
+        XCTAssertEqual(mineCount, 10)
+        XCTAssertFalse(board.cells[4][4].isMine)
+    }
+
+    func testIsSolvableDoesNotMutateBoard() {
+        var board = makeTestBoard()
+        _ = board.reveal(row: 0, col: 0)
+        let cellsBefore = board.cells
+        _ = board.isSolvable(fromRow: 0, col: 0)
+        for r in 0..<board.rows {
+            for c in 0..<board.columns {
+                XCTAssertEqual(board.cells[r][c].state, cellsBefore[r][c].state)
+                XCTAssertEqual(board.cells[r][c].isMine, cellsBefore[r][c].isMine)
+            }
+        }
+    }
+
     // MARK: - Helpers
 
     /// 3x3 board: mine at (0,2)

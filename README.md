@@ -11,7 +11,7 @@
 [![Platform](https://img.shields.io/badge/Platform-iOS%2017+-blue.svg?style=flat&logo=apple)](https://developer.apple.com/ios/)
 [![SwiftUI](https://img.shields.io/badge/UI-SwiftUI-purple.svg?style=flat&logo=swift)](https://developer.apple.com/swiftui/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg?style=flat)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-80%20passed-brightgreen.svg?style=flat&logo=checkmarx)](#-testing)
+[![Tests](https://img.shields.io/badge/Tests-85%20passed-brightgreen.svg?style=flat&logo=checkmarx)](#-testing)
 [![No Dependencies](https://img.shields.io/badge/Dependencies-None-lightgrey.svg?style=flat)](#)
 
 <br>
@@ -39,6 +39,7 @@
 | **iCloud Sync** | Stats persist via `NSUbiquitousKeyValueStore` with `UserDefaults` fallback |
 | **Haptic Feedback** | Tactile feedback on flag placement, hints, wins, and losses |
 | **Accessibility** | Full VoiceOver support with per-cell labels and hints |
+| **Solvable Boards** | Boards are generated to be solvable through logic alone — no guessing required (configurable) |
 | **First-Tap Safety** | Mines placed after first tap — tapped cell and neighbors are always safe |
 | **Flood Fill Reveal** | Tapping an empty cell cascades to reveal the entire safe region |
 | **Chord Support** | Tap a revealed number with correct flags to auto-reveal remaining neighbors |
@@ -139,6 +140,15 @@ Smart Hint (3-tier priority)
 ├── 1. Logically deducible: cells provably safe from visible numbers + flags
 ├── 2. Frontier: hidden cells adjacent to revealed cells
 └── 3. Fallback: any hidden non-mine cell
+
+Solvable Board Generation (generate-and-test)
+├── Place mines randomly (respecting first-tap exclusion zone)
+├── Simulate logical play from first-tap cell
+│   ├── Rule 1: If hidden neighbors == remaining mines → flag them
+│   └── Rule 2: If all mines flagged → reveal remaining neighbors
+├── If all safe cells deducible → board is solvable, use it
+├── Otherwise → reset and retry (up to 100 attempts)
+└── Fallback: use last generated layout if no solvable board found
 ```
 
 ---
@@ -185,17 +195,17 @@ To enable cross-device stat syncing:
 
 ### Test Suite Overview
 
-The project includes **80 tests** across 6 test files — 69 unit tests covering core game logic and 11 UI tests verifying end-to-end user flows:
+The project includes **85 tests** across 6 test files — 74 unit tests covering core game logic and 11 UI tests verifying end-to-end user flows:
 
 ```
 MinesweepTests/
-├── BoardTests.swift          36 tests
+├── BoardTests.swift          41 tests
 ├── GameViewModelTests.swift  15 tests
 ├── GameStatsTests.swift       7 tests
 ├── StatsStoreTests.swift      6 tests
 └── DifficultyTests.swift      5 tests
                               ─────────
-                              69 unit tests
+                              74 unit tests
 
 MinesweepUITests/
 └── MinesweepUITests.swift    11 tests
@@ -220,7 +230,7 @@ xcodebuild -project Minesweep.xcodeproj \
 
 | Test File | Tests | What's Covered |
 |:----------|:-----:|:---------------|
-| **BoardTests** | 36 | Mine placement (count, first-tap safety, neighbor exclusion, deterministic via seeded RNG, idempotent), adjacent mine counts, reveal (safe/mine/flagged/already-revealed/invalid coordinates), flood fill (empty region cascade, stops at numbers, skips flagged cells), flagging (toggle, revealed cell ignored, invalid coordinates, remaining count, incremental tracking, negative remaining), chord (correct flags, wrong flags, flag mismatch, invalid coordinates, hidden/flagged/zero-adjacent edge cases), win detection, all mines revealed on loss, neighbor counts (corner/edge/center), revealed count accuracy (single reveal, flood fill, chord, mine loss) |
+| **BoardTests** | 41 | Mine placement (count, first-tap safety, neighbor exclusion, deterministic via seeded RNG, idempotent), adjacent mine counts, reveal (safe/mine/flagged/already-revealed/invalid coordinates), flood fill (empty region cascade, stops at numbers, skips flagged cells), flagging (toggle, revealed cell ignored, invalid coordinates, remaining count, incremental tracking, negative remaining), chord (correct flags, wrong flags, flag mismatch, invalid coordinates, hidden/flagged/zero-adjacent edge cases), win detection, all mines revealed on loss, neighbor counts (corner/edge/center), revealed count accuracy (single reveal, flood fill, chord, mine loss), solvability (solvable board detection, unsolvable board detection, ensureSolvable retry, no-retry mode, non-mutation guarantee) |
 | **GameViewModelTests** | 15 | State transitions (idle -> playing -> won/lost), actions blocked after game over (reveal, flag, chord), flagging before first reveal, `newGame()` reset, difficulty change, hint system (blocked in idle, blocked after game over, returns safe cell, prefers logically deducible cells, no repeat while active) |
 | **StatsStoreTests** | 6 | `StatsRecording` protocol verification, ViewModel stats integration (win/loss recording via injected mock, correct difficulty tracking, no stats on safe reveal) |
 | **GameStatsTests** | 7 | Initial state, record win, record loss, best time tracks minimum, average win time, win rate accuracy, `Codable` encode/decode round-trip |

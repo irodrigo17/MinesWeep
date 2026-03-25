@@ -50,7 +50,7 @@ Minesweep/
 │   ├── Cell.swift                   # Cell struct, CellState enum (hidden/revealed/flagged)
 │   ├── GameState.swift              # GameState enum (idle/playing/won/lost)
 │   ├── Difficulty.swift             # Difficulty enum with rows/columns/mineCount presets
-│   ├── Board.swift                  # Game engine: mines, reveal, flood fill, chord, flags
+│   ├── Board.swift                  # Game engine: mines, reveal, flood fill, chord, flags, solvability
 │   ├── GameStats.swift              # Per-difficulty stats (Codable)
 │   ├── StatsStore.swift             # StatsRecording protocol + iCloud/UserDefaults persistence
 │   └── Settings.swift               # User settings (long press duration), persisted via UserDefaults
@@ -67,8 +67,8 @@ Minesweep/
 ├── Utilities/
 │   ├── HapticManager.swift          # UIKit haptic feedback wrapper
 │   └── ShakeDetector.swift          # Device shake detection for hints
-MinesweepTests/                      # 69 unit tests
-├── BoardTests.swift                 # 36 tests - core game engine
+MinesweepTests/                      # 74 unit tests
+├── BoardTests.swift                 # 41 tests - core game engine
 ├── GameViewModelTests.swift         # 15 tests - state transitions, hints
 ├── GameStatsTests.swift             # 7 tests - stats recording
 ├── StatsStoreTests.swift            # 6 tests - protocol, DI integration
@@ -131,3 +131,4 @@ Board sizes optimized for mobile portrait, not classic desktop sizes.
 - **Flood fill**: BFS from empty (adjacentMines=0) cells, reveals neighbors, stops at numbered cells
 - **Chord**: When tapping revealed number with correct adjacent flags, auto-reveals remaining hidden neighbors
 - **Smart hints** (shake to trigger): 3-tier priority — (1) logically deducible safe cells, (2) frontier cells adjacent to revealed, (3) any hidden non-mine cell
+- **Solvable board generation**: Generate-and-test approach — place mines, simulate logical play (flag deduction + reveal deduction), retry up to 100 times if unsolvable. Configurable via `Settings.solvableBoards`

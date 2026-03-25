@@ -36,7 +36,7 @@ struct Board {
 
     // MARK: - Mine Placement
 
-    mutating func placeMines(excludingRow row: Int, excludingColumn col: Int, using rng: inout some RandomNumberGenerator) {
+    private mutating func placeMinesOnce(excludingRow row: Int, excludingColumn col: Int, using rng: inout some RandomNumberGenerator) {
         guard !minesPlaced else { return }
 
         let exclusionZone = neighbors(of: row, col) + [(row, col)]
@@ -60,9 +60,35 @@ struct Board {
         minesPlaced = true
     }
 
-    mutating func placeMines(excludingRow row: Int, excludingColumn col: Int) {
+    mutating func placeMines(excludingRow row: Int, excludingColumn col: Int, ensureSolvable: Bool = true) {
+        guard !minesPlaced else { return }
         var rng = SystemRandomNumberGenerator()
-        placeMines(excludingRow: row, excludingColumn: col, using: &rng)
+        if ensureSolvable {
+            let maxAttempts = 100
+            for attempt in 0..<maxAttempts {
+                placeMinesOnce(excludingRow: row, excludingColumn: col, using: &rng)
+                if attempt == maxAttempts - 1 || isSolvable(fromRow: row, col: col) {
+                    break
+                }
+                resetMines()
+            }
+        } else {
+            placeMinesOnce(excludingRow: row, excludingColumn: col, using: &rng)
+        }
+    }
+
+    mutating func placeMines(excludingRow row: Int, excludingColumn col: Int, using rng: inout some RandomNumberGenerator) {
+        placeMinesOnce(excludingRow: row, excludingColumn: col, using: &rng)
+    }
+
+    private mutating func resetMines() {
+        for r in 0..<rows {
+            for c in 0..<columns {
+                cells[r][c].isMine = false
+                cells[r][c].adjacentMines = 0
+            }
+        }
+        minesPlaced = false
     }
 
     private mutating func computeAdjacentMineCounts() {
@@ -177,6 +203,93 @@ struct Board {
                 }
             }
         }
+    }
+
+    // MARK: - Solvability Check
+
+    /// Simulates logical play from the given starting cell.
+    /// Returns true if all safe cells can be revealed without guessing.
+    func isSolvable(fromRow startRow: Int, col startCol: Int) -> Bool {
+        // Build a simulation grid: true = revealed, false = hidden
+        var revealed = Array(repeating: Array(repeating: false, count: columns), count: rows)
+        var flagged = Array(repeating: Array(repeating: false, count: columns), count: rows)
+        var revealedCount = 0
+        let safeCellCount = totalCells - mineCount
+
+        // Simulate initial reveal + flood fill from starting cell
+        func floodFill(from r: Int, _ c: Int) {
+            var queue = [(r, c)]
+            while !queue.isEmpty {
+                let (cr, cc) = queue.removeFirst()
+                for (nr, nc) in neighbors(of: cr, cc) {
+                    guard !revealed[nr][nc] && !cells[nr][nc].isMine else { continue }
+                    revealed[nr][nc] = true
+                    revealedCount += 1
+                    if cells[nr][nc].adjacentMines == 0 {
+                        queue.append((nr, nc))
+                    }
+                }
+            }
+        }
+
+        revealed[startRow][startCol] = true
+        revealedCount += 1
+        if cells[startRow][startCol].adjacentMines == 0 {
+            floodFill(from: startRow, startCol)
+        }
+
+        if revealedCount == safeCellCount { return true }
+
+        // Iteratively apply logical deduction
+        var progress = true
+        while progress {
+            progress = false
+
+            for r in 0..<rows {
+                for c in 0..<columns {
+                    guard revealed[r][c] && cells[r][c].adjacentMines > 0 else { continue }
+
+                    let neighs = neighbors(of: r, c)
+                    var hiddenNeighbors = [(Int, Int)]()
+                    var flaggedCount = 0
+                    for (nr, nc) in neighs {
+                        if flagged[nr][nc] {
+                            flaggedCount += 1
+                        } else if !revealed[nr][nc] {
+                            hiddenNeighbors.append((nr, nc))
+                        }
+                    }
+
+                    let remainingMines = cells[r][c].adjacentMines - flaggedCount
+
+                    // Rule 1: All remaining hidden neighbors are mines → flag them
+                    if remainingMines == hiddenNeighbors.count && remainingMines > 0 {
+                        for (nr, nc) in hiddenNeighbors {
+                            flagged[nr][nc] = true
+                            progress = true
+                        }
+                    }
+
+                    // Rule 2: All mines accounted for → reveal remaining hidden neighbors
+                    if remainingMines == 0 && !hiddenNeighbors.isEmpty {
+                        for (nr, nc) in hiddenNeighbors {
+                            if !cells[nr][nc].isMine {
+                                revealed[nr][nc] = true
+                                revealedCount += 1
+                                progress = true
+                                if cells[nr][nc].adjacentMines == 0 {
+                                    floodFill(from: nr, nc)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if revealedCount == safeCellCount { return true }
+        }
+
+        return revealedCount == safeCellCount
     }
 
     // MARK: - Helpers

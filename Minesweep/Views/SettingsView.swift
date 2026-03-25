@@ -23,6 +23,14 @@ struct SettingsView: View {
                 } footer: {
                     Text("How long you need to hold a cell to place or remove a flag.")
                 }
+
+                Section {
+                    Toggle("Solvable Boards", isOn: $settings.solvableBoards)
+                } header: {
+                    Text("Gameplay")
+                } footer: {
+                    Text("When enabled, boards are generated to be solvable through logic alone, without guessing. Disabling allows classic random mine placement.")
+                }
             }
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)

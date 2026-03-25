@@ -1,6 +1,11 @@
 import Foundation
 
-class StatsStore: ObservableObject {
+protocol StatsRecording {
+    func recordWin(difficulty: Difficulty, time: Int)
+    func recordLoss(difficulty: Difficulty)
+}
+
+class StatsStore: ObservableObject, StatsRecording {
     static let shared = StatsStore()
 
     private let cloudStore = NSUbiquitousKeyValueStore.default

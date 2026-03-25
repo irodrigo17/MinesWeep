@@ -5,26 +5,28 @@ struct GameView: View {
     let onMenu: () -> Void
 
     var body: some View {
-        VStack(spacing: 0) {
-            HeaderView(
-                remainingFlags: viewModel.remainingFlags,
-                elapsedSeconds: viewModel.elapsedSeconds,
-                gameState: viewModel.gameState,
-                onReset: { viewModel.newGame() }
-            )
+        GeometryReader { geometry in
+            VStack(spacing: 0) {
+                HeaderView(
+                    remainingFlags: viewModel.remainingFlags,
+                    elapsedSeconds: viewModel.elapsedSeconds,
+                    gameState: viewModel.gameState,
+                    onReset: { viewModel.newGame() }
+                )
 
-            Divider()
+                Divider()
 
-            Spacer()
+                Spacer()
 
-            gridView
-                .padding(8)
+                gridView(availableWidth: geometry.size.width)
+                    .padding(8)
 
-            Spacer()
+                Spacer()
 
-            Divider()
+                Divider()
 
-            bottomBar
+                bottomBar
+            }
         }
         .onShake {
             viewModel.showHint()
@@ -41,8 +43,8 @@ struct GameView: View {
         }
     }
 
-    private var gridView: some View {
-        let size = cellSize
+    private func gridView(availableWidth: CGFloat) -> some View {
+        let size = cellSize(for: availableWidth)
         return VStack(spacing: 2) {
             ForEach(0..<viewModel.rows, id: \.self) { row in
                 HStack(spacing: 2) {
@@ -54,7 +56,7 @@ struct GameView: View {
                             isHinted: viewModel.hintCell?.row == row && viewModel.hintCell?.col == col
                         )
                         .onTapGesture {
-                            handleTap(row: row, col: col)
+                            viewModel.tapCell(row: row, col: col)
                         }
                         .onLongPressGesture(minimumDuration: 0.15) {
                             handleLongPress(row: row, col: col)
@@ -71,10 +73,10 @@ struct GameView: View {
         }
     }
 
-    private var cellSize: CGFloat {
-        let screenWidth = UIScreen.main.bounds.width - 32
+    private func cellSize(for availableWidth: CGFloat) -> CGFloat {
+        let gridWidth = availableWidth - 16
         let maxSize: CGFloat = 44
-        let calculated = (screenWidth - CGFloat(viewModel.columns - 1) * 2) / CGFloat(viewModel.columns)
+        let calculated = (gridWidth - CGFloat(viewModel.columns - 1) * 2) / CGFloat(viewModel.columns)
         return min(maxSize, max(24, calculated))
     }
 
@@ -93,15 +95,6 @@ struct GameView: View {
     }
 
     // MARK: - Interaction
-
-    private func handleTap(row: Int, col: Int) {
-        let cell = viewModel.cells[row][col]
-        if cell.isRevealed && cell.adjacentMines > 0 {
-            viewModel.chordCell(row: row, col: col)
-        } else {
-            viewModel.revealCell(row: row, col: col)
-        }
-    }
 
     private func handleLongPress(row: Int, col: Int) {
         viewModel.toggleFlag(row: row, col: col)

@@ -7,11 +7,9 @@ struct Board {
     private(set) var cells: [[Cell]]
     private(set) var minesPlaced: Bool = false
     private(set) var revealedCount: Int = 0
+    private(set) var flagCount: Int = 0
 
     var totalCells: Int { rows * columns }
-    var flagCount: Int {
-        cells.flatMap { $0 }.filter { $0.isFlagged }.count
-    }
     var remainingFlags: Int { mineCount - flagCount }
 
     init(difficulty: Difficulty) {
@@ -31,7 +29,9 @@ struct Board {
         self.mineCount = mineCount
         self.cells = cells
         self.minesPlaced = true
-        self.revealedCount = cells.flatMap { $0 }.filter { $0.isRevealed }.count
+        let flat = cells.flatMap { $0 }
+        self.revealedCount = flat.filter { $0.isRevealed }.count
+        self.flagCount = flat.filter { $0.isFlagged }.count
     }
 
     // MARK: - Mine Placement
@@ -105,8 +105,10 @@ struct Board {
         switch cells[row][col].state {
         case .hidden:
             cells[row][col].state = .flagged
+            flagCount += 1
         case .flagged:
             cells[row][col].state = .hidden
+            flagCount -= 1
         case .revealed:
             break
         }

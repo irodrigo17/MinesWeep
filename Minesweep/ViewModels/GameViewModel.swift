@@ -1,5 +1,5 @@
 import Foundation
-import SwiftUI
+import Combine
 
 class GameViewModel: ObservableObject {
     @Published var board: Board
@@ -10,14 +10,16 @@ class GameViewModel: ObservableObject {
     private var startDate: Date?
     private var timer: Timer?
     private var hintTimer: Timer?
+    private let statsRecorder: StatsRecording
 
     var remainingFlags: Int { board.remainingFlags }
     var cells: [[Cell]] { board.cells }
     var rows: Int { board.rows }
     var columns: Int { board.columns }
 
-    init(difficulty: Difficulty = .beginner) {
+    init(difficulty: Difficulty = .beginner, statsRecorder: StatsRecording = StatsStore.shared) {
         self.difficulty = difficulty
+        self.statsRecorder = statsRecorder
         self.board = Board(difficulty: difficulty)
     }
 
@@ -27,6 +29,15 @@ class GameViewModel: ObservableObject {
     }
 
     // MARK: - Actions
+
+    func tapCell(row: Int, col: Int) {
+        let cell = board.cells[row][col]
+        if cell.isRevealed && cell.adjacentMines > 0 {
+            chordCell(row: row, col: col)
+        } else {
+            revealCell(row: row, col: col)
+        }
+    }
 
     func revealCell(row: Int, col: Int) {
         guard gameState == .idle || gameState == .playing else { return }
@@ -155,7 +166,7 @@ class GameViewModel: ObservableObject {
             hintTimer = nil
             hintCell = nil
             HapticManager.notification(.error)
-            StatsStore.shared.recordLoss(difficulty: difficulty)
+            statsRecorder.recordLoss(difficulty: difficulty)
         case .won:
             gameState = .won
             stopTimer()
@@ -163,7 +174,7 @@ class GameViewModel: ObservableObject {
             hintTimer = nil
             hintCell = nil
             HapticManager.notification(.success)
-            StatsStore.shared.recordWin(difficulty: difficulty, time: elapsedSeconds)
+            statsRecorder.recordWin(difficulty: difficulty, time: elapsedSeconds)
         case .safe, .noAction:
             break
         }

@@ -46,6 +46,12 @@ struct GameView: View {
             }
         }
         .animation(.easeOut(duration: 0.3), value: viewModel.gameState)
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { _ in
+            viewModel.pauseTimer()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
+            viewModel.resumeTimer()
+        }
         .sheet(isPresented: $showSettings, onDismiss: {
             viewModel.resumeTimer()
         }) {

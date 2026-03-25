@@ -4,11 +4,14 @@ struct HeaderView: View {
     let remainingFlags: Int
     let elapsedSeconds: Int
     let gameState: GameState
+    @Binding var flagMode: Bool
     let onReset: () -> Void
 
     var body: some View {
         HStack {
             counterLabel(value: remainingFlags)
+            Spacer()
+            flagToggle
             Spacer()
             resetButton
             Spacer()
@@ -16,6 +19,23 @@ struct HeaderView: View {
         }
         .padding(.horizontal)
         .padding(.vertical, 8)
+    }
+
+    private var flagToggle: some View {
+        Button {
+            flagMode.toggle()
+        } label: {
+            Image(systemName: flagMode ? "flag.fill" : "flag")
+                .font(.system(size: 22))
+                .foregroundStyle(flagMode ? .red : .secondary)
+                .frame(width: 40, height: 40)
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(flagMode ? Color.red.opacity(0.15) : Color(.systemGray5))
+                )
+        }
+        .accessibilityLabel(flagMode ? "Flag mode on" : "Flag mode off")
+        .accessibilityHint("Double tap to toggle flag mode")
     }
 
     private func counterLabel(value: Int) -> some View {

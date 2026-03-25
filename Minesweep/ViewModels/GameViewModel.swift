@@ -7,6 +7,7 @@ class GameViewModel: ObservableObject {
     @Published private(set) var difficulty: Difficulty
     @Published private(set) var elapsedSeconds: Int = 0
     @Published var hintCell: (row: Int, col: Int)?
+    @Published var flagMode: Bool = false
     private var startDate: Date?
     private var timer: Timer?
     private var hintTimer: Timer?
@@ -32,7 +33,10 @@ class GameViewModel: ObservableObject {
 
     func tapCell(row: Int, col: Int) {
         let cell = board.cells[row][col]
-        if cell.isRevealed && cell.adjacentMines > 0 {
+        if flagMode && !cell.isRevealed {
+            toggleFlag(row: row, col: col)
+            HapticManager.impact(.medium)
+        } else if cell.isRevealed && cell.adjacentMines > 0 {
             chordCell(row: row, col: col)
         } else {
             revealCell(row: row, col: col)
@@ -73,6 +77,7 @@ class GameViewModel: ObservableObject {
         hintTimer?.invalidate()
         hintTimer = nil
         hintCell = nil
+        flagMode = false
     }
 
     // MARK: - Hint

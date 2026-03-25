@@ -22,12 +22,16 @@ struct CellView: View {
             switch cell.state {
             case .hidden:
                 hiddenCell
+                    .transition(.identity)
             case .flagged:
                 flaggedCell
+                    .transition(.scale(scale: 0.8).combined(with: .opacity))
             case .revealed:
                 revealedCell
+                    .transition(.scale(scale: 0.85).combined(with: .opacity))
             }
         }
+        .animation(.easeOut(duration: 0.15), value: cell.state)
         .frame(width: size, height: size)
         .overlay {
             if isHinted {

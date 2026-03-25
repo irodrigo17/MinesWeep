@@ -11,6 +11,7 @@ struct GameView: View {
                     remainingFlags: viewModel.remainingFlags,
                     elapsedSeconds: viewModel.elapsedSeconds,
                     gameState: viewModel.gameState,
+                    flagMode: $viewModel.flagMode,
                     onReset: { viewModel.newGame() }
                 )
 
@@ -39,8 +40,10 @@ struct GameView: View {
                     onPlayAgain: { viewModel.newGame() },
                     onMenu: onMenu
                 )
+                .transition(.opacity.combined(with: .scale(scale: 0.9)))
             }
         }
+        .animation(.easeOut(duration: 0.3), value: viewModel.gameState)
     }
 
     private func gridView(availableWidth: CGFloat) -> some View {

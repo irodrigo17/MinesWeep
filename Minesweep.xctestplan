@@ -1,0 +1,36 @@
+{
+  "configurations" : [
+    {
+      "id" : "40AC1077-9FE3-4E38-9FC0-3B557C13DBC5",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "performanceAntipatternCheckerEnabled" : true,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:Minesweep.xcodeproj",
+      "identifier" : "E10000001",
+      "name" : "Minesweep"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:Minesweep.xcodeproj",
+        "identifier" : "E20000001",
+        "name" : "MinesweepTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Minesweep.xcodeproj",
+        "identifier" : "E30000001",
+        "name" : "MinesweepUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

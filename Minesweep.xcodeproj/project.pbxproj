@@ -26,6 +26,8 @@
 		A10000017 /* ShakeDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000017 /* ShakeDetector.swift */; };
 		A20000001 /* BoardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000001 /* BoardTests.swift */; };
 		A20000002 /* GameStatsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000002 /* GameStatsTests.swift */; };
+		A20000003 /* GameViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000003 /* GameViewModelTests.swift */; };
+		A20000004 /* DifficultyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000004 /* DifficultyTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +60,8 @@
 		B10000017 /* ShakeDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShakeDetector.swift; sourceTree = "<group>"; };
 		B20000001 /* BoardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardTests.swift; sourceTree = "<group>"; };
 		B20000002 /* GameStatsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStatsTests.swift; sourceTree = "<group>"; };
+		B20000003 /* GameViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModelTests.swift; sourceTree = "<group>"; };
+		B20000004 /* DifficultyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DifficultyTests.swift; sourceTree = "<group>"; };
 		C10000001 /* Minesweep.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Minesweep.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C20000002 /* MinesweepTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MinesweepTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -150,6 +154,8 @@
 			children = (
 				B20000001 /* BoardTests.swift */,
 				B20000002 /* GameStatsTests.swift */,
+				B20000003 /* GameViewModelTests.swift */,
+				B20000004 /* DifficultyTests.swift */,
 			);
 			path = MinesweepTests;
 			sourceTree = "<group>";
@@ -259,6 +265,8 @@
 			files = (
 				A20000001 /* BoardTests.swift in Sources */,
 				A20000002 /* GameStatsTests.swift in Sources */,
+				A20000003 /* GameViewModelTests.swift in Sources */,
+				A20000004 /* DifficultyTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

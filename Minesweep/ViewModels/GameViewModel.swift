@@ -2,11 +2,11 @@ import Foundation
 import SwiftUI
 
 class GameViewModel: ObservableObject {
-    @Published private(set) var board: Board
-    @Published private(set) var gameState: GameState = .idle
+    @Published var board: Board
+    @Published var gameState: GameState = .idle
     @Published private(set) var difficulty: Difficulty
     @Published private(set) var elapsedSeconds: Int = 0
-    @Published private(set) var hintCell: (row: Int, col: Int)?
+    @Published var hintCell: (row: Int, col: Int)?
     private var startDate: Date?
     private var timer: Timer?
     private var hintTimer: Timer?

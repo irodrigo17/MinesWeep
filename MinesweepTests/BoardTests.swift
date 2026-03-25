@@ -261,6 +261,74 @@ final class BoardTests: XCTestCase {
         XCTAssertEqual(neighbors.count, 8)
     }
 
+    // MARK: - Mine Placement Edge Cases
+
+    func testPlaceMinesTwiceIsNoOp() {
+        var board = Board(difficulty: .beginner)
+        var rng = SeededRNG(state: 42)
+        board.placeMines(excludingRow: 0, excludingColumn: 0, using: &rng)
+        let firstPlacement = board.cells.flatMap { $0 }.map { $0.isMine }
+        board.placeMines(excludingRow: 4, excludingColumn: 4)
+        let secondPlacement = board.cells.flatMap { $0 }.map { $0.isMine }
+        XCTAssertEqual(firstPlacement, secondPlacement)
+    }
+
+    func testRevealInvalidCoordinatesIsNoAction() {
+        var board = makeTestBoard()
+        XCTAssertEqual(board.reveal(row: -1, col: 0), .noAction)
+        XCTAssertEqual(board.reveal(row: 0, col: -1), .noAction)
+        XCTAssertEqual(board.reveal(row: 3, col: 0), .noAction)
+        XCTAssertEqual(board.reveal(row: 0, col: 3), .noAction)
+    }
+
+    func testFlagInvalidCoordinatesIsIgnored() {
+        var board = makeTestBoard()
+        board.toggleFlag(row: -1, col: 0)
+        board.toggleFlag(row: 99, col: 99)
+        XCTAssertEqual(board.flagCount, 0)
+    }
+
+    func testChordInvalidCoordinatesIsNoAction() {
+        var board = makeTestBoard()
+        XCTAssertEqual(board.chord(row: -1, col: 0), .noAction)
+        XCTAssertEqual(board.chord(row: 99, col: 99), .noAction)
+    }
+
+    // MARK: - Flood Fill Edge Cases
+
+    func testFloodFillSkipsFlaggedCells() {
+        let cells: [[Cell]] = [
+            [Cell(adjacentMines: 0), Cell(adjacentMines: 1), Cell(isMine: true)],
+            [Cell(adjacentMines: 0), Cell(adjacentMines: 1), Cell(adjacentMines: 1)],
+            [Cell(adjacentMines: 0), Cell(adjacentMines: 0), Cell(adjacentMines: 0)],
+        ]
+        var board = Board(cells: cells, mineCount: 1)
+        // Flag a cell in the flood fill path
+        board.toggleFlag(row: 1, col: 0)
+        _ = board.reveal(row: 2, col: 0)
+        // Flagged cell should remain flagged
+        XCTAssertTrue(board.cells[1][0].isFlagged)
+        // Other reachable cells should be revealed
+        XCTAssertTrue(board.cells[2][0].isRevealed)
+        XCTAssertTrue(board.cells[2][1].isRevealed)
+    }
+
+    // MARK: - Reveal All Mines on Loss
+
+    func testRevealAllMinesOnLoss() {
+        // 3x3 with 2 mines
+        let cells: [[Cell]] = [
+            [Cell(adjacentMines: 1), Cell(isMine: true), Cell(adjacentMines: 1)],
+            [Cell(adjacentMines: 2), Cell(adjacentMines: 2), Cell(adjacentMines: 2)],
+            [Cell(adjacentMines: 1), Cell(isMine: true), Cell(adjacentMines: 1)],
+        ]
+        var board = Board(cells: cells, mineCount: 2)
+        _ = board.reveal(row: 0, col: 1) // hit mine
+        // Both mines should be revealed
+        XCTAssertTrue(board.cells[0][1].isRevealed)
+        XCTAssertTrue(board.cells[2][1].isRevealed)
+    }
+
     // MARK: - Helpers
 
     /// 3x3 board: mine at (0,2)

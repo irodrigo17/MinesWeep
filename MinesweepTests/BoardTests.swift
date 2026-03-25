@@ -329,6 +329,103 @@ final class BoardTests: XCTestCase {
         XCTAssertTrue(board.cells[2][1].isRevealed)
     }
 
+    // MARK: - Revealed Count Accuracy
+
+    func testRevealedCountAfterSingleReveal() {
+        var board = makeTestBoard()
+        _ = board.reveal(row: 0, col: 1) // numbered cell
+        XCTAssertEqual(board.revealedCount, 1)
+    }
+
+    func testRevealedCountAfterFloodFill() {
+        let cells: [[Cell]] = [
+            [Cell(adjacentMines: 0), Cell(adjacentMines: 1), Cell(isMine: true)],
+            [Cell(adjacentMines: 0), Cell(adjacentMines: 1), Cell(adjacentMines: 1)],
+            [Cell(adjacentMines: 0), Cell(adjacentMines: 0), Cell(adjacentMines: 0)],
+        ]
+        var board = Board(cells: cells, mineCount: 1)
+        _ = board.reveal(row: 0, col: 0) // flood fill reveals all 8 safe cells
+        let actualRevealed = board.cells.flatMap { $0 }.filter { $0.isRevealed && !$0.isMine }.count
+        XCTAssertEqual(board.revealedCount, actualRevealed)
+        XCTAssertEqual(board.revealedCount, 8)
+    }
+
+    func testRevealedCountAfterChord() {
+        let cells: [[Cell]] = [
+            [Cell(adjacentMines: 1), Cell(adjacentMines: 1), Cell(isMine: true)],
+            [Cell(adjacentMines: 1), Cell(adjacentMines: 1), Cell(adjacentMines: 1)],
+            [Cell(adjacentMines: 0), Cell(adjacentMines: 0), Cell(adjacentMines: 0)],
+        ]
+        var board = Board(cells: cells, mineCount: 1)
+        _ = board.reveal(row: 0, col: 0) // reveal "1"
+        _ = board.reveal(row: 0, col: 1) // reveal "1"
+        board.toggleFlag(row: 0, col: 2)  // flag mine
+        _ = board.chord(row: 0, col: 0)   // chord reveals (1,0) and (1,1)
+        let actualRevealed = board.cells.flatMap { $0 }.filter { $0.isRevealed && !$0.isMine }.count
+        XCTAssertEqual(board.revealedCount, actualRevealed)
+    }
+
+    func testRevealedCountNotIncrementedForMinesOnLoss() {
+        let cells: [[Cell]] = [
+            [Cell(adjacentMines: 1), Cell(isMine: true), Cell(adjacentMines: 1)],
+            [Cell(adjacentMines: 2), Cell(adjacentMines: 2), Cell(adjacentMines: 2)],
+            [Cell(adjacentMines: 1), Cell(isMine: true), Cell(adjacentMines: 1)],
+        ]
+        var board = Board(cells: cells, mineCount: 2)
+        _ = board.reveal(row: 0, col: 1) // hit mine, revealAllMines reveals both
+        // revealedCount should only count the one mine we explicitly revealed
+        XCTAssertEqual(board.revealedCount, 1)
+    }
+
+    // MARK: - Chord Edge Cases
+
+    func testChordOnHiddenCellIsNoAction() {
+        var board = makeTestBoard()
+        let result = board.chord(row: 0, col: 0) // hidden cell
+        XCTAssertEqual(result, .noAction)
+    }
+
+    func testChordOnFlaggedCellIsNoAction() {
+        var board = makeTestBoard()
+        board.toggleFlag(row: 0, col: 0)
+        let result = board.chord(row: 0, col: 0) // flagged cell
+        XCTAssertEqual(result, .noAction)
+    }
+
+    func testChordOnZeroAdjacentMinesIsNoAction() {
+        var board = makeTestBoard()
+        // Reveal (2,2) which has adjacentMines=0
+        _ = board.reveal(row: 2, col: 2)
+        let result = board.chord(row: 2, col: 2)
+        XCTAssertEqual(result, .noAction)
+    }
+
+    // MARK: - Flag Count Tracking
+
+    func testFlagCountTrackedIncrementally() {
+        var board = makeTestBoard()
+        XCTAssertEqual(board.flagCount, 0)
+        board.toggleFlag(row: 0, col: 0)
+        XCTAssertEqual(board.flagCount, 1)
+        board.toggleFlag(row: 1, col: 0)
+        XCTAssertEqual(board.flagCount, 2)
+        board.toggleFlag(row: 0, col: 0) // unflag
+        XCTAssertEqual(board.flagCount, 1)
+    }
+
+    func testRemainingFlagsCanGoNegative() {
+        // 2x2 board with 1 mine, flag all 4 cells (3 more than mineCount)
+        let cells: [[Cell]] = [
+            [Cell(adjacentMines: 1), Cell(isMine: true)],
+            [Cell(adjacentMines: 1), Cell(adjacentMines: 1)],
+        ]
+        var board = Board(cells: cells, mineCount: 1)
+        board.toggleFlag(row: 0, col: 0)
+        board.toggleFlag(row: 1, col: 0)
+        board.toggleFlag(row: 1, col: 1)
+        XCTAssertEqual(board.remainingFlags, -2)
+    }
+
     // MARK: - Helpers
 
     /// 3x3 board: mine at (0,2)

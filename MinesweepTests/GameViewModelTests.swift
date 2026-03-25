@@ -111,11 +111,11 @@ final class GameViewModelTests: XCTestCase {
         XCTAssertNil(vm.hintCell)
     }
 
-    func testHintReturnsSafeCell() {
+    func testHintReturnsSafeCell() throws {
         let vm = makeViewModelWithLargerBoard()
         // Reveal one cell to start playing
         vm.revealCell(row: 0, col: 0)
-        guard vm.gameState == .playing else { return } // skip if flood fill won
+        try XCTSkipIf(vm.gameState != .playing, "Flood fill won the game, skipping")
         vm.showHint()
         guard let hint = vm.hintCell else {
             XCTFail("Hint should be provided during playing state")
@@ -133,7 +133,7 @@ final class GameViewModelTests: XCTestCase {
             [Cell(adjacentMines: 0), Cell(adjacentMines: 1), Cell(adjacentMines: 1), Cell(adjacentMines: 1), Cell(adjacentMines: 0)],
             [Cell(adjacentMines: 0), Cell(adjacentMines: 0), Cell(adjacentMines: 0), Cell(adjacentMines: 0), Cell(adjacentMines: 0)],
         ]
-        let vm = GameViewModel(difficulty: .beginner)
+        let vm = GameViewModel(difficulty: .beginner, statsRecorder: noopRecorder)
         vm.board = Board(cells: cells, mineCount: 1)
         vm.gameState = .playing
         // Reveal (0,1) and flag the mine
@@ -157,10 +157,10 @@ final class GameViewModelTests: XCTestCase {
         }
     }
 
-    func testHintNotRepeatedWhileActive() {
+    func testHintNotRepeatedWhileActive() throws {
         let vm = makeViewModelWithLargerBoard()
         vm.revealCell(row: 2, col: 2)
-        guard vm.gameState == .playing else { return }
+        try XCTSkipIf(vm.gameState != .playing, "Flood fill won the game, skipping")
         vm.showHint()
         let firstHint = vm.hintCell
         XCTAssertNotNil(firstHint)
@@ -172,8 +172,10 @@ final class GameViewModelTests: XCTestCase {
 
     // MARK: - Helpers
 
+    private let noopRecorder = MockStatsRecorder()
+
     private func makeViewModel() -> GameViewModel {
-        GameViewModel(difficulty: .beginner)
+        GameViewModel(difficulty: .beginner, statsRecorder: noopRecorder)
     }
 
     /// ViewModel with a pre-built 3x3 board (mine at 0,2)
@@ -183,7 +185,7 @@ final class GameViewModelTests: XCTestCase {
             [Cell(adjacentMines: 0), Cell(adjacentMines: 1), Cell(adjacentMines: 1)],
             [Cell(adjacentMines: 0), Cell(adjacentMines: 0), Cell(adjacentMines: 0)],
         ]
-        let vm = GameViewModel(difficulty: .beginner)
+        let vm = GameViewModel(difficulty: .beginner, statsRecorder: noopRecorder)
         vm.board = Board(cells: cells, mineCount: 1)
         return vm
     }
@@ -197,7 +199,7 @@ final class GameViewModelTests: XCTestCase {
             [Cell(adjacentMines: 1), Cell(adjacentMines: 1), Cell(adjacentMines: 0), Cell(adjacentMines: 0)],
             [Cell(isMine: true), Cell(adjacentMines: 1), Cell(adjacentMines: 0), Cell(adjacentMines: 0)],
         ]
-        let vm = GameViewModel(difficulty: .beginner)
+        let vm = GameViewModel(difficulty: .beginner, statsRecorder: noopRecorder)
         vm.board = Board(cells: cells, mineCount: 2)
         return vm
     }

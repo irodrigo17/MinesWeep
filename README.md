@@ -11,7 +11,7 @@
 [![Platform](https://img.shields.io/badge/Platform-iOS%2017+-blue.svg?style=flat&logo=apple)](https://developer.apple.com/ios/)
 [![SwiftUI](https://img.shields.io/badge/UI-SwiftUI-purple.svg?style=flat&logo=swift)](https://developer.apple.com/swiftui/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg?style=flat)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-50%20passed-brightgreen.svg?style=flat&logo=checkmarx)](#-testing)
+[![Tests](https://img.shields.io/badge/Tests-69%20passed-brightgreen.svg?style=flat&logo=checkmarx)](#-testing)
 [![No Dependencies](https://img.shields.io/badge/Dependencies-None-lightgrey.svg?style=flat)](#)
 
 <br>
@@ -184,16 +184,17 @@ To enable cross-device stat syncing:
 
 ### Test Suite Overview
 
-The project includes **50 unit tests** across 4 test files covering the core game logic:
+The project includes **69 unit tests** across 5 test files covering the core game logic:
 
 ```
 MinesweepTests/
-├── BoardTests.swift          26 tests
-├── GameViewModelTests.swift  12 tests
+├── BoardTests.swift          36 tests
+├── GameViewModelTests.swift  15 tests
 ├── GameStatsTests.swift       7 tests
+├── StatsStoreTests.swift      6 tests
 └── DifficultyTests.swift      5 tests
                               ─────────
-                              50 tests
+                              69 tests
 ```
 
 ### Run Tests
@@ -213,8 +214,9 @@ xcodebuild -project Minesweep.xcodeproj \
 
 | Test File | Tests | What's Covered |
 |:----------|:-----:|:---------------|
-| **BoardTests** | 26 | Mine placement (count, first-tap safety, neighbor exclusion, deterministic via seeded RNG, idempotent), adjacent mine counts, reveal (safe/mine/flagged/already-revealed/invalid coordinates), flood fill (empty region cascade, stops at numbers, skips flagged cells), flagging (toggle, revealed cell ignored, invalid coordinates, remaining count), chord (correct flags, wrong flags, flag mismatch, invalid coordinates), win detection, all mines revealed on loss, neighbor counts (corner/edge/center) |
-| **GameViewModelTests** | 12 | State transitions (idle -> playing -> won/lost), actions blocked after game over (reveal, flag, chord), flagging before first reveal, `newGame()` reset, difficulty change, hint system (blocked in idle, blocked after game over, returns safe cell, prefers logically deducible cells, no repeat while active) |
+| **BoardTests** | 36 | Mine placement (count, first-tap safety, neighbor exclusion, deterministic via seeded RNG, idempotent), adjacent mine counts, reveal (safe/mine/flagged/already-revealed/invalid coordinates), flood fill (empty region cascade, stops at numbers, skips flagged cells), flagging (toggle, revealed cell ignored, invalid coordinates, remaining count, incremental tracking, negative remaining), chord (correct flags, wrong flags, flag mismatch, invalid coordinates, hidden/flagged/zero-adjacent edge cases), win detection, all mines revealed on loss, neighbor counts (corner/edge/center), revealed count accuracy (single reveal, flood fill, chord, mine loss) |
+| **GameViewModelTests** | 15 | State transitions (idle -> playing -> won/lost), actions blocked after game over (reveal, flag, chord), flagging before first reveal, `newGame()` reset, difficulty change, hint system (blocked in idle, blocked after game over, returns safe cell, prefers logically deducible cells, no repeat while active) |
+| **StatsStoreTests** | 6 | `StatsRecording` protocol verification, ViewModel stats integration (win/loss recording via injected mock, correct difficulty tracking, no stats on safe reveal) |
 | **GameStatsTests** | 7 | Initial state, record win, record loss, best time tracks minimum, average win time, win rate accuracy, `Codable` encode/decode round-trip |
 | **DifficultyTests** | 5 | Beginner/Intermediate/Expert preset values, mine count < total cells invariant, `allCases` count |
 
@@ -249,8 +251,9 @@ minesweep/
 │   │   └── ShakeDetector.swift             # Device shake detection
 │   └── Assets.xcassets/
 ├── MinesweepTests/
-│   ├── BoardTests.swift                    # 26 tests
-│   ├── GameViewModelTests.swift            # 12 tests
+│   ├── BoardTests.swift                    # 36 tests
+│   ├── GameViewModelTests.swift            # 15 tests
+│   ├── StatsStoreTests.swift               #  6 tests
 │   ├── GameStatsTests.swift                #  7 tests
 │   └── DifficultyTests.swift               #  5 tests
 └── README.md

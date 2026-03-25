@@ -34,6 +34,7 @@ struct HeaderView: View {
                         .fill(flagMode ? Color.red.opacity(0.15) : Color(.systemGray5))
                 )
         }
+        .accessibilityIdentifier("flagToggle")
         .accessibilityLabel(flagMode ? "Flag mode on" : "Flag mode off")
         .accessibilityHint("Double tap to toggle flag mode")
     }
@@ -55,6 +56,7 @@ struct HeaderView: View {
             Text(faceEmoji)
                 .font(.system(size: 32))
         }
+        .accessibilityIdentifier("resetButton")
     }
 
     private var faceEmoji: String {

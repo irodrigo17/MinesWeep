@@ -29,10 +29,18 @@
 		A20000003 /* GameViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000003 /* GameViewModelTests.swift */; };
 		A20000004 /* DifficultyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000004 /* DifficultyTests.swift */; };
 		A20000005 /* StatsStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000005 /* StatsStoreTests.swift */; };
+		A30000001 /* MinesweepUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30000001 /* MinesweepUITests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		C20000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E10000010 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E10000001;
+			remoteInfo = Minesweep;
+		};
+		C30000001 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E10000010 /* Project object */;
 			proxyType = 1;
@@ -66,6 +74,8 @@
 		B20000005 /* StatsStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsStoreTests.swift; sourceTree = "<group>"; };
 		C10000001 /* Minesweep.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Minesweep.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C20000002 /* MinesweepTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MinesweepTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B30000001 /* MinesweepUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinesweepUITests.swift; sourceTree = "<group>"; };
+		C30000002 /* MinesweepUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MinesweepUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -74,6 +84,7 @@
 			children = (
 				D10000002 /* Minesweep */,
 				D20000001 /* MinesweepTests */,
+				D30000001 /* MinesweepUITests */,
 				D10000008 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -147,6 +158,7 @@
 			children = (
 				C10000001 /* Minesweep.app */,
 				C20000002 /* MinesweepTests.xctest */,
+				C30000002 /* MinesweepUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -161,6 +173,14 @@
 				B20000005 /* StatsStoreTests.swift */,
 			);
 			path = MinesweepTests;
+			sourceTree = "<group>";
+		};
+		D30000001 /* MinesweepUITests */ = {
+			isa = PBXGroup;
+			children = (
+				B30000001 /* MinesweepUITests.swift */,
+			);
+			path = MinesweepUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -198,6 +218,22 @@
 			productReference = C20000002 /* MinesweepTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		E30000001 /* MinesweepUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F30000003 /* Build configuration list for PBXNativeTarget "MinesweepUITests" */;
+			buildPhases = (
+				E30000002 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E30000003 /* PBXTargetDependency */,
+			);
+			name = MinesweepUITests;
+			productName = MinesweepUITests;
+			productReference = C30000002 /* MinesweepUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -223,6 +259,7 @@
 			targets = (
 				E10000001 /* Minesweep */,
 				E20000001 /* MinesweepTests */,
+				E30000001 /* MinesweepUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -274,6 +311,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E30000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A30000001 /* MinesweepUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -281,6 +326,11 @@
 			isa = PBXTargetDependency;
 			target = E10000001 /* Minesweep */;
 			targetProxy = C20000001 /* PBXContainerItemProxy */;
+		};
+		E30000003 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E10000001 /* Minesweep */;
+			targetProxy = C30000001 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -462,6 +512,38 @@
 			};
 			name = Release;
 		};
+		F30000021 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.minesweep.uitests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Minesweep;
+			};
+			name = Debug;
+		};
+		F30000022 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.minesweep.uitests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Minesweep;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -488,6 +570,15 @@
 			buildConfigurations = (
 				F20000021 /* Debug */,
 				F20000022 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F30000003 /* Build configuration list for PBXNativeTarget "MinesweepUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F30000021 /* Debug */,
+				F30000022 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

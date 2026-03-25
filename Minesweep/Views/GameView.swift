@@ -66,6 +66,7 @@ struct GameView: View {
                         }
                         .accessibilityLabel(accessibilityLabel(row: row, col: col))
                         .accessibilityHint(accessibilityHint(row: row, col: col))
+                        .accessibilityIdentifier("cell_\(row)_\(col)")
                         .accessibilityAddTraits(viewModel.cells[row][col].isRevealed ? [] : .isButton)
                         .accessibilityAction(named: "Toggle Flag") {
                             handleLongPress(row: row, col: col)
@@ -88,6 +89,7 @@ struct GameView: View {
         HStack {
             Button("Menu", action: onMenu)
                 .font(.subheadline)
+                .accessibilityIdentifier("menuButton")
             Spacer()
             Text(viewModel.difficulty.displayName)
                 .font(.subheadline)

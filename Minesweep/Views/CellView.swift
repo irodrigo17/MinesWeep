@@ -4,6 +4,7 @@ struct CellView: View {
     let cell: Cell
     let gameState: GameState
     let size: CGFloat
+    var isHinted: Bool = false
 
     private static let numberColors: [Int: Color] = [
         1: .blue,
@@ -28,6 +29,11 @@ struct CellView: View {
             }
         }
         .frame(width: size, height: size)
+        .overlay {
+            if isHinted {
+                ShimmerOverlay(size: size)
+            }
+        }
     }
 
     private var hiddenCell: some View {
@@ -87,5 +93,32 @@ struct CellView: View {
     private var emptyCell: some View {
         RoundedRectangle(cornerRadius: 3)
             .fill(Color(.systemGray6))
+    }
+}
+
+struct ShimmerOverlay: View {
+    let size: CGFloat
+    @State private var phase: CGFloat = -1
+
+    var body: some View {
+        RoundedRectangle(cornerRadius: 3)
+            .fill(
+                LinearGradient(
+                    colors: [
+                        .clear,
+                        .white.opacity(0.6),
+                        .white.opacity(0.8),
+                        .white.opacity(0.6),
+                        .clear,
+                    ],
+                    startPoint: UnitPoint(x: phase - 0.3, y: phase - 0.3),
+                    endPoint: UnitPoint(x: phase + 0.3, y: phase + 0.3)
+                )
+            )
+            .onAppear {
+                withAnimation(.easeInOut(duration: 0.8).repeatForever(autoreverses: true)) {
+                    phase = 1.3
+                }
+            }
     }
 }

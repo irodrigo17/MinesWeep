@@ -23,6 +23,7 @@
 		A10000014 /* GameStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000014 /* GameStats.swift */; };
 		A10000015 /* StatsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000015 /* StatsStore.swift */; };
 		A10000016 /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000016 /* StatsView.swift */; };
+		A10000017 /* ShakeDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000017 /* ShakeDetector.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		B10000014 /* GameStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStats.swift; sourceTree = "<group>"; };
 		B10000015 /* StatsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsStore.swift; sourceTree = "<group>"; };
 		B10000016 /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
+		B10000017 /* ShakeDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShakeDetector.swift; sourceTree = "<group>"; };
 		C10000001 /* Minesweep.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Minesweep.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -113,6 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				B10000012 /* HapticManager.swift */,
+				B10000017 /* ShakeDetector.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -203,6 +206,7 @@
 				A10000014 /* GameStats.swift in Sources */,
 				A10000015 /* StatsStore.swift in Sources */,
 				A10000016 /* StatsView.swift in Sources */,
+				A10000017 /* ShakeDetector.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

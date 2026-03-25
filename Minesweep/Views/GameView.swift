@@ -26,6 +26,9 @@ struct GameView: View {
 
             bottomBar
         }
+        .onShake {
+            viewModel.showHint()
+        }
         .overlay {
             if viewModel.gameState == .won || viewModel.gameState == .lost {
                 GameOverView(
@@ -47,7 +50,8 @@ struct GameView: View {
                         CellView(
                             cell: viewModel.cells[row][col],
                             gameState: viewModel.gameState,
-                            size: size
+                            size: size,
+                            isHinted: viewModel.hintCell?.row == row && viewModel.hintCell?.col == col
                         )
                         .onTapGesture {
                             handleTap(row: row, col: col)

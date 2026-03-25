@@ -58,12 +58,18 @@ struct GameView: View {
                             size: size,
                             isHinted: viewModel.hintCell?.row == row && viewModel.hintCell?.col == col
                         )
-                        .onTapGesture {
-                            viewModel.tapCell(row: row, col: col)
-                        }
-                        .onLongPressGesture(minimumDuration: 0.15) {
-                            handleLongPress(row: row, col: col)
-                        }
+                        .gesture(
+                            LongPressGesture(minimumDuration: 0.2)
+                                .onEnded { _ in
+                                    handleLongPress(row: row, col: col)
+                                }
+                        )
+                        .simultaneousGesture(
+                            TapGesture()
+                                .onEnded {
+                                    viewModel.tapCell(row: row, col: col)
+                                }
+                        )
                         .accessibilityLabel(accessibilityLabel(row: row, col: col))
                         .accessibilityHint(accessibilityHint(row: row, col: col))
                         .accessibilityIdentifier("cell_\(row)_\(col)")

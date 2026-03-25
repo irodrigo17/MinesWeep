@@ -32,7 +32,8 @@
 |:--------|:------------|
 | **Mobile-Optimized Boards** | Board sizes designed for portrait phone screens — no scrolling needed |
 | **Three Difficulty Levels** | Beginner (9x9), Intermediate (12x12), Expert (16x10) with balanced mine densities |
-| **Touch Gestures** | Tap to reveal, quick long-press (0.15s) to flag, tap revealed numbers to chord |
+| **Touch Gestures** | Tap to reveal, long-press to flag (configurable duration), tap revealed numbers to chord |
+| **Settings** | Configurable long press duration; accessible from menu and in-game (pauses timer) |
 | **Smart Hints** | Shake the device for a hint — prioritizes logically deducible safe cells |
 | **Stats Tracking** | Per-difficulty stats: wins, losses, win rate, best time, average time |
 | **iCloud Sync** | Stats persist via `NSUbiquitousKeyValueStore` with `UserDefaults` fallback |
@@ -242,7 +243,8 @@ minesweep/
 │   │   ├── Difficulty.swift                # Difficulty presets
 │   │   ├── Board.swift                     # Game engine: mines, reveal, flood fill, chord
 │   │   ├── GameStats.swift                 # Per-difficulty statistics
-│   │   └── StatsStore.swift                # iCloud + UserDefaults persistence
+│   │   ├── StatsStore.swift                # iCloud + UserDefaults persistence
+│   │   └── Settings.swift                  # User settings (UserDefaults persistence)
 │   ├── ViewModels/
 │   │   └── GameViewModel.swift             # Game state, timer, hints, actions
 │   ├── Views/
@@ -251,7 +253,8 @@ minesweep/
 │   │   ├── MenuView.swift                  # Difficulty selection + stats access
 │   │   ├── GameView.swift                  # Main game screen + gestures
 │   │   ├── GameOverView.swift              # Win/loss overlay
-│   │   └── StatsView.swift                 # Per-difficulty statistics display
+│   │   ├── StatsView.swift                 # Per-difficulty statistics display
+│   │   └── SettingsView.swift              # Settings configuration
 │   ├── Utilities/
 │   │   ├── HapticManager.swift             # Haptic feedback wrapper
 │   │   └── ShakeDetector.swift             # Device shake detection

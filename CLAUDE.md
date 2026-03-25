@@ -52,7 +52,8 @@ Minesweep/
 │   ├── Difficulty.swift             # Difficulty enum with rows/columns/mineCount presets
 │   ├── Board.swift                  # Game engine: mines, reveal, flood fill, chord, flags
 │   ├── GameStats.swift              # Per-difficulty stats (Codable)
-│   └── StatsStore.swift             # StatsRecording protocol + iCloud/UserDefaults persistence
+│   ├── StatsStore.swift             # StatsRecording protocol + iCloud/UserDefaults persistence
+│   └── Settings.swift               # User settings (long press duration), persisted via UserDefaults
 ├── ViewModels/
 │   └── GameViewModel.swift          # ObservableObject bridging Board to views
 ├── Views/
@@ -61,7 +62,8 @@ Minesweep/
 │   ├── MenuView.swift               # Difficulty selection + stats access
 │   ├── GameView.swift               # Main game screen, grid, gestures, accessibility
 │   ├── GameOverView.swift           # Win/loss overlay
-│   └── StatsView.swift              # Per-difficulty statistics display
+│   ├── StatsView.swift              # Per-difficulty statistics display
+│   └── SettingsView.swift           # Settings configuration (long press duration slider)
 ├── Utilities/
 │   ├── HapticManager.swift          # UIKit haptic feedback wrapper
 │   └── ShakeDetector.swift          # Device shake detection for hints
@@ -90,6 +92,8 @@ MinesweepUITests/                    # 11 UI tests
 - **First-tap safety** — mines placed after first tap; tapped cell + neighbors excluded
 - **Deferred mine placement** — `Board` starts empty, `placeMines()` called on first reveal
 - **Incremental counters** — `revealedCount` and `flagCount` are stored properties updated incrementally, not computed via O(n) scans
+- **Singleton settings** — `Settings.shared` persists user preferences to `UserDefaults`, observed by views via `@ObservedObject`
+- **Timer pause/resume** — `GameViewModel.pauseTimer()`/`resumeTimer()` track accumulated time so opening settings mid-game doesn't count toward elapsed time
 
 ### Game Flow
 
@@ -110,7 +114,7 @@ MinesweepUITests/                    # 11 UI tests
 - **Mock injection** — `GameViewModelTests` uses `MockStatsRecorder` (defined in `StatsStoreTests.swift`) to prevent tests writing to real stats
 - **`try XCTSkipIf`** — used instead of silent `guard/return` when flood fill might win the game before the test condition can be evaluated
 - **UI tests** use `app.descendants(matching: .any)["identifier"]` to find cells since their accessibility type changes (button when hidden, other when revealed)
-- **Accessibility identifiers** for XCUITest: `cell_{row}_{col}`, `flagToggle`, `resetButton`, `menuButton`
+- **Accessibility identifiers** for XCUITest: `cell_{row}_{col}`, `flagToggle`, `resetButton`, `menuButton`, `settingsButton`
 
 ## Difficulty Levels
 
